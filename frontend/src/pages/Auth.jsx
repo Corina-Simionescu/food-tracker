@@ -36,7 +36,10 @@ function Auth() {
         body: JSON.stringify(signInData),
       });
 
+      const responseData = await response.json();
+
       if (response.ok) {
+        localStorage.setItem("token", responseData.token);
         navigate("/home");
       } else {
         toast({
