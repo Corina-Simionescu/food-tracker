@@ -1,6 +1,7 @@
-import { Box, Text, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UserIcon from "../components/UserIcon.jsx";
+import { Box, CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 
 function Home() {
   const [userData, setUserData] = useState(null);
@@ -35,17 +36,24 @@ function Home() {
   }, []);
 
   return (
-    <Box p={4}>
-      <Text>Hello {userData ? userData.username : "Guest"}</Text>
-      <Button
-        mt={4}
-        onClick={() => {
-          localStorage.removeItem("token");
-          navigate("/");
-        }}
-      >
-        Sign Out
-      </Button>
+    <Box display="flex" justifyContent="space-between">
+      <CircularProgress value={40} size="10rem" color="green.400">
+        <CircularProgressLabel>40%</CircularProgressLabel>
+      </CircularProgress>
+
+      <CircularProgress value={40} size="10rem" color="green.400">
+        <CircularProgressLabel>40%</CircularProgressLabel>
+      </CircularProgress>
+
+      <CircularProgress value={40} size="10rem" color="green.400">
+        <CircularProgressLabel>40%</CircularProgressLabel>
+      </CircularProgress>
+
+      <CircularProgress value={40} size="10rem" color="green.400">
+        <CircularProgressLabel>40%</CircularProgressLabel>
+      </CircularProgress>
+
+      <UserIcon></UserIcon>
     </Box>
   );
 }

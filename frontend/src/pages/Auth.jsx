@@ -3,17 +3,17 @@ import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
+  Input,
   FormControl,
   FormLabel,
-  Input,
-  useDisclosure,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
   ModalBody,
+  ModalCloseButton,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 
@@ -24,8 +24,8 @@ function Auth() {
   const navigate = useNavigate();
   const toast = useToast();
 
-  async function handleSignIn(e) {
-    e.preventDefault();
+  async function handleSignIn(event) {
+    event.preventDefault();
 
     try {
       const response = await fetch("/api/sign-in", {
@@ -109,11 +109,11 @@ function Auth() {
     <Box>
       <form onSubmit={handleSignIn}>
         <FormControl isRequired>
-          <FormLabel htmlFor="signin-username">Username</FormLabel>
+          <FormLabel htmlFor="signInUsername">Username</FormLabel>
           <Input
             type="text"
-            id="signin-username"
-            name="signin-username"
+            id="signInUsername"
+            name="signInUsername"
             onChange={(e) =>
               setSignInData((prevData) => ({
                 ...prevData,
@@ -124,11 +124,11 @@ function Auth() {
         </FormControl>
 
         <FormControl isRequired>
-          <FormLabel htmlFor="signin-password">Password</FormLabel>
+          <FormLabel htmlFor="signInPassword">Password</FormLabel>
           <Input
             type="password"
-            id="signin-password"
-            name="signin-password"
+            id="signInPassword"
+            name="signInPassword"
             onChange={(e) =>
               setSignInData((prevData) => ({
                 ...prevData,
@@ -143,7 +143,10 @@ function Auth() {
 
       <Button onClick={onOpen}>Create account</Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+      >
         <ModalOverlay></ModalOverlay>
 
         <ModalContent>
@@ -153,11 +156,11 @@ function Auth() {
           <form onSubmit={handleSignUp}>
             <ModalBody>
               <FormControl isRequired>
-                <FormLabel htmlFor="signup-username">Username</FormLabel>
+                <FormLabel htmlFor="signUpUsername">Username</FormLabel>
                 <Input
                   type="text"
-                  id="signup-username"
-                  name="signup-username"
+                  id="signUpUsername"
+                  name="signUpUsername"
                   onChange={(e) =>
                     setSignUpData((prevData) => ({
                       ...prevData,
@@ -168,11 +171,11 @@ function Auth() {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel htmlFor="signup-password">Password</FormLabel>
+                <FormLabel htmlFor="signUpPassword">Password</FormLabel>
                 <Input
                   type="password"
-                  id="signup-password"
-                  name="signup-password"
+                  id="signUpPassword"
+                  name="signUpPassword"
                   onChange={(e) =>
                     setSignUpData((prevData) => ({
                       ...prevData,
