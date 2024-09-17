@@ -1,7 +1,7 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./pages/Auth.jsx";
-import Home from "./pages/Home.jsx";
+import FoodTracker from "./pages/FoodTracker.jsx";
 
 const router = createBrowserRouter([
   {
@@ -9,8 +9,8 @@ const router = createBrowserRouter([
     element: <Auth />,
   },
   {
-    path: "/home",
-    element: <Home />,
+    path: "/food-tracker",
+    element: <FoodTracker />,
   },
 ]);
 

@@ -11,6 +11,20 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  nutritionPlan: {
+    calories: {
+      type: String,
+    },
+    proteins: {
+      type: String,
+    },
+    fats: {
+      type: String,
+    },
+    carbohydrates: {
+      type: String,
+    },
+  },
 });
 
 userSchema.pre("save", async function (next) {

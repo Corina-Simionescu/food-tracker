@@ -26,8 +26,10 @@ import {
   RadioGroup,
   Stack,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { AiOutlineUser } from "react-icons/ai";
+import { jwtDecode } from "jwt-decode";
 
 function UserIcon() {
   const navigate = useNavigate();
@@ -36,27 +38,212 @@ function UserIcon() {
     onOpen: onNutritionPlanModalOpen,
     onClose: onNutritionPlanModalClose,
   } = useDisclosure();
+  const toast = useToast();
   const [age, setAge] = useState(0);
   const [weight, setWeight] = useState(0);
   const [height, setHeight] = useState(0);
   const [gender, setGender] = useState("");
   const [workoutFrequency, setWorkoutFrequency] = useState("");
   const [workoutIntensity, setWorkoutIntensity] = useState("");
-  const [dailyActivityLevel, setDailyActivityLevel] = useState("");
+  const [dailyActivity, setDailyActivity] = useState("");
+  const [goal, setGoal] = useState("");
 
-  function calculateNutritionPlan(event) {
+  function calculateRestingEnergyExpenditure() {
+    let ree;
+
+    if (gender === "man") {
+      ree = 10 * weight + 6.25 * height - 5 * age + 5;
+    } else if (gender === "women") {
+      ree = 10 * weight + 6.25 * height - 5 * age - 161;
+    }
+
+    return ree;
+  }
+
+  function calculateActivityFactor() {
+    //                                    Workout Factors Data
+    // | Intensity / Frequency | Rarely (0-1) | Sometimes (2-3) | Often (4-5) | Very Often (6-7) |
+    // |-----------------------|--------------|-----------------|-------------|------------------|
+    // | Light                 | 1.2          | 1.3             | 1.4         | 1.5              |
+    // | Moderate              | 1.3          | 1.5             | 1.6         | 1.7              |
+    // | Hard                  | 1.4          | 1.6             | 1.8         | 1.9              |
+    // | Very Hard             | 1.5          | 1.7             | 1.9         | 2.0              |
+
+    const workoutFactorsData = {
+      rarely: {
+        light: 1.2,
+        moderate: 1.3,
+        hard: 1.4,
+        veryHard: 1.5,
+      },
+      sometimes: {
+        light: 1.3,
+        moderate: 1.5,
+        hard: 1.6,
+        veryHard: 1.7,
+      },
+      often: {
+        light: 1.4,
+        moderate: 1.6,
+        hard: 1.8,
+        veryHard: 1.9,
+      },
+      veryOften: {
+        light: 1.5,
+        moderate: 1.7,
+        hard: 1.9,
+        veryHard: 2.0,
+      },
+    };
+
+    //   Daily Activity Factors Data
+    // | Activity Level     | Factor |
+    // -------------------- |------- |
+    // | Sedentary          | 1.2    |
+    // | Lightly Active     | 1.3    |
+    // | Moderately Active  | 1.4    |
+    // | Very Active        | 1.5    |
+    // | Extremely Active   | 1.6    |
+
+    const dailyActivityFactorsData = {
+      sedentary: 1.2,
+      lightlyActive: 1.3,
+      moderatelyActive: 1.4,
+      veryActive: 1.5,
+      extremelyActive: 1.6,
+    };
+
+    const workoutFactor =
+      workoutFactorsData[workoutFrequency][workoutIntensity];
+    const dailyActivityFactor = dailyActivityFactorsData[dailyActivity];
+
+    const activityFactor = (workoutFactor * 2 + dailyActivityFactor) / 3;
+
+    return activityFactor;
+  }
+
+  function calcuteTotalDailyEnergyExpenditure() {
+    const ree = calculateRestingEnergyExpenditure();
+    const activityFactor = calculateActivityFactor();
+
+    const tdee = ree * activityFactor;
+
+    return tdee;
+  }
+
+  function calculateCalories() {
+    const tdee = calcuteTotalDailyEnergyExpenditure();
+    let calories;
+
+    if (goal === "loseWeight") {
+      calories = tdee - 500;
+    } else if (goal === "maintainWeight") {
+      calories = tdee;
+    } else if (goal == "gainWeight") {
+      calories = tdee + 300;
+    }
+
+    return Math.round(calories);
+  }
+
+  function calculateMacronutrients(calories) {
+    let proteins, fats, carbohydrates;
+
+    if (goal === "loseWeight") {
+      proteins = 2.2 * weight;
+      fats = ((25 / 100) * calories) / 9;
+    } else if (goal === "maintainWeight") {
+      proteins = 1.8 * weight;
+      fats = ((30 / 100) * calories) / 9;
+    } else if (goal == "gainWeight") {
+      proteins = 2.0 * weight;
+      fats = ((30 / 100) * calories) / 9;
+    }
+
+    carbohydrates = (calories - (proteins * 4 + fats * 9)) / 4;
+
+    proteins = Math.round(proteins);
+    fats = Math.round(fats);
+    carbohydrates = Math.round(carbohydrates);
+
+    return { proteins, fats, carbohydrates };
+  }
+
+  function calculateNutritionPlan() {
+    const calories = calculateCalories();
+    const { proteins, fats, carbohydrates } = calculateMacronutrients(calories);
+
+    return { calories, proteins, fats, carbohydrates };
+  }
+
+  async function sendNutritionPlanToServer(
+    calories,
+    proteins,
+    fats,
+    carbohydrates
+  ) {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("User is not authenticated");
+      }
+
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.id;
+
+      const response = await fetch("/api/food-tracker/nutrition", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          calories,
+          proteins,
+          fats,
+          carbohydrates,
+        }),
+      });
+
+      const responseData = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: "Success",
+          description: responseData.message,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+
+        onNutritionPlanModalClose();
+      } else {
+        toast({
+          title: "Error",
+          description: responseData.message,
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Unexpected Error",
+        description: responseData.message,
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  }
+
+  function handleSubmit(event) {
     event.preventDefault();
 
-    console.log("calculateNutritionPlan function: ");
-    console.log(age);
-    console.log(weight);
-    console.log(height);
-    console.log(gender);
-    console.log(workoutFrequency);
-    console.log(workoutIntensity);
-    console.log(dailyActivityLevel);
-
-    onNutritionPlanModalClose();
+    const { calories, proteins, fats, carbohydrates } =
+      calculateNutritionPlan();
+    sendNutritionPlanToServer(calories, proteins, fats, carbohydrates);
   }
 
   return (
@@ -93,7 +280,7 @@ function UserIcon() {
           </ModalHeader>
           <ModalCloseButton></ModalCloseButton>
 
-          <form onSubmit={calculateNutritionPlan}>
+          <form onSubmit={handleSubmit}>
             <ModalBody>
               <FormControl isRequired>
                 <FormLabel htmlFor="age">Age (years)</FormLabel>
@@ -202,32 +389,47 @@ function UserIcon() {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel>Daily activity level</FormLabel>
+                <FormLabel>Daily activity</FormLabel>
                 <RadioGroup
-                  name="dailyActivityLevel"
-                  onChange={(value) => setDailyActivityLevel(value)}
-                  value={dailyActivityLevel}
+                  name="dailyActivity"
+                  onChange={(value) => setDailyActivity(value)}
+                  value={dailyActivity}
                 >
                   <Stack direction="column">
                     <Radio value="sedentary">
                       Sedentary (Mostly sitting: e.g. desk job)
                     </Radio>
-                    <Radio value="lightlyActive">
+                    <Radio value="light">
                       Lightly Active (Mostly standing or walking: e.g. teacher,
                       retail)
                     </Radio>
-                    <Radio value="moderatelyActive">
+                    <Radio value="moderate">
                       Moderately Active (Regular movement, some physical tasks:
                       e.g. waiter, mailman)
                     </Radio>
-                    <Radio value="veryActive">
+                    <Radio value="very">
                       Very Active (Mostly moving, regular physical tasks: e.g
                       housekeeper, gardener)
                     </Radio>
-                    <Radio value="extremelyActive">
+                    <Radio value="extreme">
                       Extremely Active (Constant movement, heavy physical tasks:
                       e.g. construction worker, firefighter)
                     </Radio>
+                  </Stack>
+                </RadioGroup>
+              </FormControl>
+
+              <FormControl isRequired>
+                <FormLabel>Your Goal</FormLabel>
+                <RadioGroup
+                  name="goal"
+                  onChange={(value) => setGoal(value)}
+                  value={goal}
+                >
+                  <Stack direction="column">
+                    <Radio value="loseWeight">Lose weight</Radio>
+                    <Radio value="maintainWeight">Maintain weight</Radio>
+                    <Radio value="gainWeight">Gain weight (build muscle)</Radio>
                   </Stack>
                 </RadioGroup>
               </FormControl>

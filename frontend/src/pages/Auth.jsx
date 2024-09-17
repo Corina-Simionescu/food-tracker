@@ -40,7 +40,7 @@ function Auth() {
 
       if (response.ok) {
         localStorage.setItem("token", responseData.token);
-        navigate("/home");
+        navigate("/food-tracker");
       } else {
         toast({
           title: "Error",
@@ -143,10 +143,7 @@ function Auth() {
 
       <Button onClick={onOpen}>Create account</Button>
 
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-      >
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
 
         <ModalContent>

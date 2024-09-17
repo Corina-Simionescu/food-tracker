@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import UserIcon from "../components/UserIcon.jsx";
 import { Box, CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 
-function Home() {
+function FoodTracker() {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
@@ -58,4 +58,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default FoodTracker;
