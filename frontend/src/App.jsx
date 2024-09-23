@@ -2,6 +2,7 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./pages/Auth.jsx";
 import FoodTracker from "./pages/FoodTracker.jsx";
+import AddFood from "./pages/AddFood.jsx";
 
 const router = createBrowserRouter([
   {
@@ -11,6 +12,10 @@ const router = createBrowserRouter([
   {
     path: "/food-tracker",
     element: <FoodTracker />,
+  },
+  {
+    path: "/food-tracker/add-food",
+    element: <AddFood />,
   },
 ]);
 
