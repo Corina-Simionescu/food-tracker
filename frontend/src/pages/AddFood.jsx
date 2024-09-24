@@ -290,6 +290,7 @@ function AddFood() {
         body: JSON.stringify({
           userId,
           date: new Date(),
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           foodName: chosenFoodName,
           amount: customAmount,
           unit: originalNutritionData.unit,

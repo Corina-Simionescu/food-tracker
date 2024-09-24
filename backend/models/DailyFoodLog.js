@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const dailyFoodLogSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  date: { type: Date, required: true },
+  date: { type: String, required: true },
   foods: [
     {
       name: { type: String, required: true },

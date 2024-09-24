@@ -79,10 +79,20 @@ function FoodTracker() {
     fetchNutritionData();
   }, []);
 
+  function f() {
+    let date = new Date();
+    let logDate = new Date(date);
+    console.log("date: ", date);
+    console.log("logDate: ", logDate);
+    let timezoneOffset = date.getTimezoneOffset() * 60 * 1000;
+    console.log("timezoneOffset: ", timezoneOffset);
+    console.log("date.getTime(): ", date.getTime());
+  }
+
   return (
     <Box>
       <Box display="flex" justifyContent="space-between">
-        <CircularProgress value={40} size="15rem" color="green.400">
+        <CircularProgress value={40} size="15rem" color="green.400" onClick={f}>
           <CircularProgressLabel>
             {eatenCalories}/{targetCalories} calories
           </CircularProgressLabel>

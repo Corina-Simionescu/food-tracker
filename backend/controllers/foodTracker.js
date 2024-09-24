@@ -1,5 +1,6 @@
 const User = require("../models/User.js");
 const DailyFoodLog = require("../models/DailyFoodLog.js");
+const moment = require("moment-timezone");
 
 async function putNutritionPlan(req, res) {
   const { userId, calories, proteins, fats, carbohydrates } = req.body;
@@ -46,6 +47,7 @@ async function putNewFood(req, res) {
   const {
     userId,
     date,
+    timezone,
     foodName,
     amount,
     unit,
@@ -55,10 +57,8 @@ async function putNewFood(req, res) {
     fats,
   } = req.body;
 
-  const logDate = new Date(date);
-
-  const startOfDay = new Date(logDate.setHours(0, 0, 0, 0));
-  const endOfDay = new Date(logDate.setHours(23, 59, 59, 999));
+  const userDate = moment(date).tz(timezone);
+  const startOfDay = userDate.clone().startOf("day");
 
   try {
     const user = await User.findById(userId);
@@ -70,15 +70,14 @@ async function putNewFood(req, res) {
     let foodLog = await DailyFoodLog.findOne({
       user: userId,
       date: {
-        $gte: startOfDay,
-        $lt: endOfDay,
+        $eq: startOfDay.toISOString(),
       },
     });
 
     if (!foodLog) {
       foodLog = new DailyFoodLog({
         user: userId,
-        date: startOfDay,
+        date: startOfDay.toISOString(),
         foods: [],
       });
     }
