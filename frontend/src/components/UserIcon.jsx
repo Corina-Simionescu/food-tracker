@@ -57,9 +57,6 @@ function UserIcon() {
       ree = 10 * weight + 6.25 * height - 5 * age - 161;
     }
 
-    console.log("calculateRestingEnergyExpenditure:");
-    console.log("ree ", ree);
-
     return ree;
   }
 
@@ -122,11 +119,6 @@ function UserIcon() {
 
     const activityFactor = (workoutFactor * 2 + dailyActivityFactor) / 3;
 
-    console.log("calculateActivityFactor:");
-    console.log("workoutFactor ", workoutFactor);
-    console.log("dailyActivityFactor ", dailyActivityFactor);
-    console.log("activityFactor ", activityFactor);
-
     return activityFactor;
   }
 
@@ -135,11 +127,6 @@ function UserIcon() {
     const activityFactor = calculateActivityFactor();
 
     const tdee = ree * activityFactor;
-
-    console.log("calcuteTotalDailyEnergyExpenditure:");
-    console.log("tdee ", tdee);
-    console.log("ree ", ree);
-    console.log("activityFactor ", activityFactor);
 
     return tdee;
   }
@@ -155,10 +142,6 @@ function UserIcon() {
     } else if (goal == "gainWeight") {
       calories = tdee + 300;
     }
-
-    console.log("calculateCalories:");
-    console.log("tdee ", tdee);
-    console.log("calories ", calories);
 
     return Math.round(calories);
   }
@@ -189,20 +172,6 @@ function UserIcon() {
   function calculateNutritionPlan() {
     const calories = calculateCalories();
     const { proteins, fats, carbohydrates } = calculateMacronutrients(calories);
-
-    console.log("calculateNutritionPlan:");
-    console.log(calories);
-    console.log(proteins);
-    console.log(fats);
-    console.log(carbohydrates);
-    console.log("----------------");
-    console.log("age ", age);
-    console.log("weight ", weight);
-    console.log("height ", height);
-    console.log("workout frequency ", workoutFrequency);
-    console.log("workout intensity ", workoutIntensity);
-    console.log("daily acitvity ", dailyActivity);
-    console.log("goal ", goal);
 
     return { calories, proteins, fats, carbohydrates };
   }

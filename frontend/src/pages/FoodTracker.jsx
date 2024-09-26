@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  CircularProgressLabel,
-  Divider,
-} from "@chakra-ui/react";
 import { jwtDecode } from "jwt-decode";
+import NutritionProgress from "../components/NutritionProgress.jsx";
 import UserIcon from "../components/UserIcon.jsx";
+import FoodLog from "../components/FoodLog.jsx";
+import { Box, Button, Divider } from "@chakra-ui/react";
 
 function FoodTracker() {
   const [userData, setUserData] = useState(null);
@@ -79,43 +75,10 @@ function FoodTracker() {
     fetchNutritionData();
   }, []);
 
-  function f() {
-    let date = new Date();
-    let logDate = new Date(date);
-    console.log("date: ", date);
-    console.log("logDate: ", logDate);
-    let timezoneOffset = date.getTimezoneOffset() * 60 * 1000;
-    console.log("timezoneOffset: ", timezoneOffset);
-    console.log("date.getTime(): ", date.getTime());
-  }
-
   return (
     <Box>
       <Box display="flex" justifyContent="space-between">
-        <CircularProgress value={40} size="15rem" color="green.400" onClick={f}>
-          <CircularProgressLabel>
-            {eatenCalories}/{targetCalories} calories
-          </CircularProgressLabel>
-        </CircularProgress>
-
-        <CircularProgress value={40} size="15rem" color="green.400">
-          <CircularProgressLabel>
-            {eatenProteins}/{targetProteins} proteins
-          </CircularProgressLabel>
-        </CircularProgress>
-
-        <CircularProgress value={40} size="15rem" color="green.400">
-          <CircularProgressLabel>
-            {eatenFats}/{targetFats} fats
-          </CircularProgressLabel>
-        </CircularProgress>
-
-        <CircularProgress value={40} size="15rem" color="green.400">
-          <CircularProgressLabel>
-            {eatenCarbohydrates}/{targetCarbohydrates} carbs
-          </CircularProgressLabel>
-        </CircularProgress>
-
+        <NutritionProgress></NutritionProgress>
         <UserIcon></UserIcon>
       </Box>
 
@@ -124,6 +87,8 @@ function FoodTracker() {
       </Button>
 
       <Divider borderWidth="0.3rem" borderColor="red"></Divider>
+
+      <FoodLog></FoodLog>
     </Box>
   );
 }

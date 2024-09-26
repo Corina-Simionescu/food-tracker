@@ -67,22 +67,22 @@ async function putNewFood(req, res) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    let foodLog = await DailyFoodLog.findOne({
+    let foodLogEntry = await DailyFoodLog.findOne({
       user: userId,
       date: {
-        $eq: startOfDay.toISOString(),
+        $eq: startOfDay.format(),
       },
     });
 
-    if (!foodLog) {
-      foodLog = new DailyFoodLog({
+    if (!foodLogEntry) {
+      foodLogEntry = new DailyFoodLog({
         user: userId,
-        date: startOfDay.toISOString(),
+        date: startOfDay.format(),
         foods: [],
       });
     }
 
-    foodLog.foods.push({
+    foodLogEntry.foods.push({
       name: foodName,
       amount,
       unit,
@@ -92,7 +92,7 @@ async function putNewFood(req, res) {
       fats,
     });
 
-    await foodLog.save();
+    await foodLogEntry.save();
 
     res.status(200).json({ message: "Food added successfully" });
   } catch (error) {
@@ -101,4 +101,26 @@ async function putNewFood(req, res) {
   }
 }
 
-module.exports = { putNutritionPlan, getNutritionPlan, putNewFood };
+async function getFoods(req, res) {
+  const userId = req.params.userId;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const foodLog = await DailyFoodLog.find({ user: userId });
+
+    res.status(200).json(foodLog);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+module.exports = {
+  putNutritionPlan,
+  getNutritionPlan,
+  putNewFood,
+  getFoods,
+};

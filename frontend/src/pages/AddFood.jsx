@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import {
   Box,
@@ -60,10 +59,6 @@ function AddFood() {
 
   useEffect(() => {
     setCustomNutrients(calculateNutrients(customAmount));
-    console.log("---useEffect---");
-    console.log("--customAmount: ", customAmount);
-    console.log("originalNutritionData: ", originalNutritionData);
-    console.log("customNutritients: ", customNutritients);
   }, [customAmount, originalNutritionData]);
 
   async function handleSearchFood() {
@@ -282,7 +277,7 @@ function AddFood() {
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id;
 
-      const response = await fetch("/api/food-tracker/add-food", {
+      const response = await fetch("/api/food-tracker/food", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
