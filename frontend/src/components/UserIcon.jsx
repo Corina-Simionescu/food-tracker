@@ -29,7 +29,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { AiOutlineUser } from "react-icons/ai";
-import { jwtDecode } from "jwt-decode";
 
 function UserIcon() {
   const navigate = useNavigate();
@@ -185,24 +184,36 @@ function UserIcon() {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        throw new Error("User is not authenticated");
+        localStorage.setItem(
+          "error",
+          "You need to sign in to generate a nutrition plan"
+        );
+        navigate("/");
+        return;
       }
-      const decodedToken = jwtDecode(token);
-      const userId = decodedToken.id;
 
       const response = await fetch("/api/food-tracker/nutrition", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          userId,
           calories,
           proteins,
           fats,
           carbohydrates,
         }),
       });
+
+      if (response.status === 401) {
+        localStorage.setItem(
+          "error",
+          "You need to sign in to generate a nutrition plan"
+        );
+        navigate("/");
+        return;
+      }
 
       const responseData = await response.json();
 

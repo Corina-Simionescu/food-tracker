@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -49,9 +49,19 @@ function AddFood() {
     fats: 0,
   });
   const [customAmount, setCustomAmount] = useState(0);
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      localStorage.setItem("error", "You need to sign in to add food");
+      navigate("/");
+      return;
+    }
+  }, []);
 
   useEffect(() => {
     setCustomAmount(originalNutritionData.amount);
@@ -274,16 +284,14 @@ function AddFood() {
       if (!token) {
         throw new Error("User is not authenticated");
       }
-      const decodedToken = jwtDecode(token);
-      const userId = decodedToken.id;
 
       const response = await fetch("/api/food-tracker/food", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          userId,
           date: new Date(),
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           foodName: chosenFoodName,

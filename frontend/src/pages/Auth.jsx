@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -23,6 +23,22 @@ function Auth() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const toast = useToast();
+
+  useEffect(() => {
+    const errorMessage = localStorage.getItem("error");
+
+    if (errorMessage) {
+      toast({
+        title: "Error",
+        description: errorMessage,
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+
+      localStorage.removeItem("error");
+    }
+  }, []);
 
   async function handleSignIn(event) {
     event.preventDefault();

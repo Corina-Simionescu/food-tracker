@@ -3,7 +3,8 @@ const DailyFoodLog = require("../models/DailyFoodLog.js");
 const moment = require("moment-timezone");
 
 async function putNutritionPlan(req, res) {
-  const { userId, calories, proteins, fats, carbohydrates } = req.body;
+  const userId = req.user.id;
+  const { calories, proteins, fats, carbohydrates } = req.body;
 
   try {
     const user = await User.findById(userId);
@@ -28,7 +29,7 @@ async function putNutritionPlan(req, res) {
 }
 
 async function getNutritionPlan(req, res) {
-  const userId = req.params.userId;
+  const userId = req.user.id;
 
   try {
     const user = await User.findById(userId);
@@ -44,8 +45,9 @@ async function getNutritionPlan(req, res) {
 }
 
 async function putNewFood(req, res) {
+  const userId = req.user.id;
+
   const {
-    userId,
     date,
     timezone,
     foodName,
@@ -101,8 +103,8 @@ async function putNewFood(req, res) {
   }
 }
 
-async function getFoods(req, res) {
-  const userId = req.params.userId;
+async function getFoodLog(req, res) {
+  const userId = req.user.id;
 
   try {
     const user = await User.findById(userId);
@@ -122,5 +124,5 @@ module.exports = {
   putNutritionPlan,
   getNutritionPlan,
   putNewFood,
-  getFoods,
+  getFoodLog,
 };

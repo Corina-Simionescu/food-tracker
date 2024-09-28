@@ -1,10 +1,27 @@
 const express = require("express");
 const router = express.Router();
 const foodTrackerController = require("../controllers/foodTracker.js");
+const authMiddleware = require("../middleware/auth.js");
 
-router.put("/nutrition", foodTrackerController.putNutritionPlan);
-router.get("/nutrition/:userId", foodTrackerController.getNutritionPlan);
-router.put("/food", foodTrackerController.putNewFood);
-router.get("/food/:userId", foodTrackerController.getFoods);
+router.put(
+  "/nutrition",
+  authMiddleware.verifyAuthToken,
+  foodTrackerController.putNutritionPlan
+);
+router.get(
+  "/nutrition/",
+  authMiddleware.verifyAuthToken,
+  foodTrackerController.getNutritionPlan
+);
+router.put(
+  "/food",
+  authMiddleware.verifyAuthToken,
+  foodTrackerController.putNewFood
+);
+router.get(
+  "/food",
+  authMiddleware.verifyAuthToken,
+  foodTrackerController.getFoodLog
+);
 
 module.exports = router;

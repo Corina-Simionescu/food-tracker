@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 import { Box, CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 
 function NutritionProgress() {
+  const navigate = useNavigate();
   const [targetNutrition, setTargetNutrition] = useState({
     calories: 0,
     proteins: 0,
@@ -20,18 +21,26 @@ function NutritionProgress() {
     async function fetchNutritionData() {
       const token = localStorage.getItem("token");
       if (!token) {
-        throw new Error("User is not authenticated");
+        localStorage.setItem("error", "You need to sign in");
+        navigate("/");
+        return;
       }
-      const decodedToken = jwtDecode(token);
-      const userId = decodedToken.id;
 
       try {
-        const response = await fetch(`/api/food-tracker/nutrition/${userId}`, {
+        const response = await fetch("/api/food-tracker/nutrition", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         });
+
+        if (response.status === 401) {
+          localStorage.setItem("error", "You need to sign in");
+          navigate("/");
+          return;
+        }
+
         const responseData = await response.json();
 
         if (response.ok) {
@@ -50,18 +59,26 @@ function NutritionProgress() {
     async function fetchFoodLog() {
       const token = localStorage.getItem("token");
       if (!token) {
-        throw new Error("User is not authenticated");
+        localStorage.setItem("error", "You need to sign in");
+        navigate("/");
+        return;
       }
-      const decodedToken = jwtDecode(token);
-      const userId = decodedToken.id;
 
       try {
-        const response = await fetch(`/api/food-tracker/food/${userId}`, {
+        const response = await fetch(`/api/food-tracker/food`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         });
+
+        if (response.status === 401) {
+          localStorage.setItem("error", "You need to sign in");
+          navigate("/");
+          return;
+        }
+
         const responseData = await response.json();
 
         if (response.ok) {
