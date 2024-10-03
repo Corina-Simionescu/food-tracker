@@ -30,7 +30,7 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlineUser } from "react-icons/ai";
 
-function UserIcon() {
+function UserIcon({ updateNutritionPlan }) {
   const navigate = useNavigate();
   const {
     isOpen: isNutritionPlanModalOpen,
@@ -253,6 +253,8 @@ function UserIcon() {
     const { calories, proteins, fats, carbohydrates } =
       calculateNutritionPlan();
     sendNutritionPlanToServer(calories, proteins, fats, carbohydrates);
+
+    updateNutritionPlan();
   }
 
   return (

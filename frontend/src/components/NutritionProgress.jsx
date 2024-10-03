@@ -2,14 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 
-function NutritionProgress() {
+function NutritionProgress({ targetNutrition }) {
   const navigate = useNavigate();
-  const [targetNutrition, setTargetNutrition] = useState({
-    calories: 0,
-    proteins: 0,
-    carbohydrates: 0,
-    fats: 0,
-  });
   const [consumedNutrition, setConsumedNutrition] = useState({
     calories: 0,
     proteins: 0,
@@ -18,44 +12,6 @@ function NutritionProgress() {
   });
 
   useEffect(() => {
-    async function fetchNutritionData() {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        localStorage.setItem("error", "You need to sign in");
-        navigate("/");
-        return;
-      }
-
-      try {
-        const response = await fetch("/api/food-tracker/nutrition", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.status === 401) {
-          localStorage.setItem("error", "You need to sign in");
-          navigate("/");
-          return;
-        }
-
-        const responseData = await response.json();
-
-        if (response.ok) {
-          setTargetNutrition({
-            calories: responseData.calories,
-            proteins: responseData.proteins,
-            carbohydrates: responseData.carbohydrates,
-            fats: responseData.fats,
-          });
-        }
-      } catch (error) {
-        console.error(error.message);
-      }
-    }
-
     async function fetchFoodLog() {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -120,7 +76,6 @@ function NutritionProgress() {
       });
     }
 
-    fetchNutritionData();
     calculateConsumedNutrition();
   }, []);
 
