@@ -14,15 +14,19 @@ const userSchema = new mongoose.Schema({
   nutritionPlan: {
     calories: {
       type: String,
+      default: "0",
     },
     proteins: {
       type: String,
+      default: "0",
     },
     fats: {
       type: String,
+      default: "0",
     },
     carbohydrates: {
       type: String,
+      default: "0",
     },
   },
 });

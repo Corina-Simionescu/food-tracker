@@ -83,26 +83,26 @@ function NutritionProgress({ targetNutrition }) {
     <Box>
       <CircularProgress value={40} size="15rem" color="green.400">
         <CircularProgressLabel>
-          {consumedNutrition.calories}/{targetNutrition.calories} calories
+          {consumedNutrition.calories}/{targetNutrition.calories || 0} calories
         </CircularProgressLabel>
       </CircularProgress>
 
       <CircularProgress value={40} size="15rem" color="green.400">
         <CircularProgressLabel>
-          {consumedNutrition.proteins}/{targetNutrition.proteins} proteins
+          {consumedNutrition.proteins}/{targetNutrition.proteins || 0} proteins
         </CircularProgressLabel>
       </CircularProgress>
 
       <CircularProgress value={40} size="15rem" color="green.400">
         <CircularProgressLabel>
-          {consumedNutrition.carbohydrates}/{targetNutrition.carbohydrates}{" "}
+          {consumedNutrition.carbohydrates}/{targetNutrition.carbohydrates || 0}{" "}
           carbs
         </CircularProgressLabel>
       </CircularProgress>
 
       <CircularProgress value={40} size="15rem" color="green.400">
         <CircularProgressLabel>
-          {consumedNutrition.fats}/{targetNutrition.fats} fats
+          {consumedNutrition.fats}/{targetNutrition.fats || 0} fats
         </CircularProgressLabel>
       </CircularProgress>
     </Box>

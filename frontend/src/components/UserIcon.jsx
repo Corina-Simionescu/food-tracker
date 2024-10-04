@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -30,7 +30,7 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlineUser } from "react-icons/ai";
 
-function UserIcon({ updateNutritionPlan }) {
+function UserIcon({ updateNutritionPlan, userHasNutritionPlan }) {
   const navigate = useNavigate();
   const {
     isOpen: isNutritionPlanModalOpen,
@@ -46,6 +46,12 @@ function UserIcon({ updateNutritionPlan }) {
   const [workoutIntensity, setWorkoutIntensity] = useState("");
   const [dailyActivity, setDailyActivity] = useState("");
   const [goal, setGoal] = useState("");
+
+  useEffect(() => {
+    if (userHasNutritionPlan === false) {
+      onNutritionPlanModalOpen();
+    }
+  }, [userHasNutritionPlan]);
 
   function calculateRestingEnergyExpenditure() {
     let ree;

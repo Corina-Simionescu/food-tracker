@@ -13,6 +13,7 @@ function FoodTracker() {
     carbohydrates: 0,
     fats: 0,
   });
+  const [userHasNutritionPlan, setUserHasNutritionPlan] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -62,9 +63,21 @@ function FoodTracker() {
           carbohydrates: responseData.carbohydrates,
           fats: responseData.fats,
         });
+
+        if (
+          responseData.calories === "0" &&
+          responseData.proteins === "0" &&
+          responseData.carbohydrates === "0" &&
+          responseData.fats === "0"
+        ) {
+          setUserHasNutritionPlan(false);
+        }
+      } else {
+        setUserHasNutritionPlan(false);
       }
     } catch (error) {
       console.error(error.message);
+      setUserHasNutritionPlan(false);
     }
   }
 
@@ -78,6 +91,7 @@ function FoodTracker() {
         <NutritionProgress targetNutrition={nutritionPlan}></NutritionProgress>
         <UserIcon
           updateNutritionPlan={updateNutritionPlan}
+          userHasNutritionPlan={userHasNutritionPlan}
         ></UserIcon>
       </Box>
 
