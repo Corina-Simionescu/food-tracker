@@ -82,11 +82,37 @@ function AddFood() {
       const response = await fetch(url);
       const responseData = await response.json();
 
-      const filteredResults = responseData.searchResults.filter(
-        (category) => category.name != "Articles" && category.name != "Videos"
-      );
+      let reorderedResults = [];
 
-      setSearchResults(filteredResults);
+      const simpleFoods = responseData.searchResults.find(
+        (category) => category.name === "Simple Foods"
+      );
+      if (simpleFoods) {
+        reorderedResults.push(simpleFoods);
+      }
+
+      const recipes = responseData.searchResults.find(
+        (category) => category.name === "Recipes"
+      );
+      if (recipes) {
+        reorderedResults.push(recipes);
+      }
+
+      const products = responseData.searchResults.find(
+        (category) => category.name === "Products"
+      );
+      if (products) {
+        reorderedResults.push(products);
+      }
+
+      const menuItems = responseData.searchResults.find(
+        (category) => category.name === "Menu Items"
+      );
+      if (menuItems) {
+        reorderedResults.push(menuItems);
+      }
+
+      setSearchResults(reorderedResults);
     } catch (error) {
       console.error("Error fetching searched foods: ", error);
     }
