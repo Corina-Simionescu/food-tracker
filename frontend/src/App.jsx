@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Auth from "./pages/Auth.jsx";
 import FoodTracker from "./pages/FoodTracker.jsx";
 import AddFood from "./pages/AddFood.jsx";
+import { Box } from "@chakra-ui/react";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <Box backgroundColor="#464646" minHeight="100vh">
+      <RouterProvider router={router} />
+    </Box>
+  );
 }
 
 export default App;

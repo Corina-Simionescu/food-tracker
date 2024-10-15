@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { InfoOutlineIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -24,6 +25,7 @@ import {
   Tbody,
   Td,
   Text,
+  Tooltip,
   Tr,
   VStack,
   useDisclosure,
@@ -366,12 +368,17 @@ function AddFood() {
       minHeight="100vh"
       paddingTop="5rem"
     >
-      <Heading>Search food</Heading>
+      <Heading textColor="#ffffff">Search food</Heading>
       <InputGroup width="40rem" marginTop="3rem">
         <Input
           type="text"
           placeholder="e.g., pizza"
-          _placeholder={{ fontStyle: "italic" }}
+          backgroundColor="#222222"
+          textColor="#ffffff"
+          border="0.05rem solid #bfbfbf"
+          borderRadius="1rem"
+          cursor="text"
+          _placeholder={{ fontStyle: "italic", textColor: "#bfbfbf" }}
           onChange={(event) => setInputFood(event.target.value)}
           onKeyDown={(event) => {
             if (event.key === "Enter") {
@@ -380,7 +387,18 @@ function AddFood() {
           }}
         ></Input>
         <InputRightElement width="5rem">
-          <Button onClick={handleSearchFood}>Search</Button>
+          <Button
+            backgroundColor="#333333"
+            textColor="#ffffff"
+            borderRadius="1rem"
+            border="0.05rem solid #bfbfbf"
+            _hover={{
+              boxShadow: "0 0 2px 2px  #737373",
+            }}
+            onClick={handleSearchFood}
+          >
+            Search
+          </Button>
         </InputRightElement>
       </InputGroup>
 
@@ -389,11 +407,11 @@ function AddFood() {
           spacing={4}
           align="stretch"
           width="40rem"
-          mt={4}
-          bg="white"
-          boxShadow="md"
-          borderRadius="md"
-          p={4}
+          marginTop="1rem"
+          backgroundColor="#222222"
+          borderRadius="1rem"
+          padding="1rem"
+          border="0.05rem solid #bfbfbf"
         >
           {searchResults.map((category) =>
             category.results.map((food) => (
@@ -401,12 +419,12 @@ function AddFood() {
                 key={food.id}
                 display="flex"
                 alignItems="center"
-                padding={4}
-                borderRadius="md"
-                boxShadow="md"
-                background="gray.50"
+                background="#333333"
+                textColor="#ffffff"
+                padding="1rem"
+                borderRadius="1rem"
                 cursor="pointer"
-                _hover={{ bg: "gray.100" }}
+                _hover={{ boxShadow: "0 0 2px 2px  #737373" }}
                 onClick={() => handleFoodSelection(category, food)}
               >
                 {food.image && (
@@ -428,16 +446,47 @@ function AddFood() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
 
-        <ModalContent>
-          <ModalHeader>{chosenFoodName}</ModalHeader>
+        <ModalContent
+          backgroundColor="#404040"
+          textColor="#ffffff"
+          maxWidth="40rem"
+          border="0.05rem solid #bfbfbf"
+          boxShadow="0 0 3px 3px  #737373"
+        >
+          <ModalHeader textAlign="center" marginY="1.5rem">
+            {chosenFoodName}
+          </ModalHeader>
           <ModalCloseButton></ModalCloseButton>
 
-          <Text>Set the amount as needed</Text>
-          <TableContainer>
-            <Table variant="simple">
+          <TableContainer
+            width="80%"
+            backgroundColor="#222222"
+            border="0.05rem solid #bfbfbf"
+            borderRadius="1rem"
+            margin="0 auto"
+          >
+            <Table
+              variant="simple"
+              sx={{
+                Td: {
+                  borderBottom: "0.05rem solid #bfbfbf",
+                },
+              }}
+            >
               <Tbody>
                 <Tr>
-                  <Td>Amount</Td>
+                  <Td border="0">
+                    Amount{"   "}
+                    <Tooltip
+                      label="Set the amount as needed"
+                      placement="top"
+                      backgroundColor="#e6e6e6"
+                      textColor="#000000"
+                      fontSize="1rem"
+                    >
+                      <InfoOutlineIcon></InfoOutlineIcon>
+                    </Tooltip>
+                  </Td>
                   <Td>
                     <NumberInput
                       value={customAmount}
@@ -445,11 +494,18 @@ function AddFood() {
                       onChange={(inputAmount) => {
                         setCustomAmount(inputAmount);
                       }}
+                      width="10rem"
                     >
                       <NumberInputField></NumberInputField>
                       <NumberInputStepper>
-                        <NumberIncrementStepper></NumberIncrementStepper>
-                        <NumberDecrementStepper></NumberDecrementStepper>
+                        <NumberIncrementStepper
+                          color="#ffffff"
+                          _active={{ backgroundColor: "#595959" }}
+                        ></NumberIncrementStepper>
+                        <NumberDecrementStepper
+                          color="#ffffff"
+                          _active={{ backgroundColor: "#595959" }}
+                        ></NumberDecrementStepper>
                       </NumberInputStepper>
                     </NumberInput>
                   </Td>
@@ -470,7 +526,7 @@ function AddFood() {
                   <Td>{Math.round(customNutritients.carbohydrates)}</Td>
                   <Td>grams</Td>
                 </Tr>
-                <Tr>
+                <Tr sx={{ Td: { border: "0" } }}>
                   <Td>Fats</Td>
                   <Td>{Math.round(customNutritients.fats)}</Td>
                   <Td>grams</Td>
@@ -479,7 +535,22 @@ function AddFood() {
             </Table>
           </TableContainer>
 
-          <ModalFooter>
+          <ModalFooter
+            display="flex"
+            justifyContent="center"
+            gap="1rem"
+            sx={{
+              Button: {
+                backgroundColor: "#222222",
+                textColor: "#ffffff",
+                border: "0.05rem solid #bfbfbf",
+                "&:hover": {
+                  boxShadow: "0 0 3px 3px  #737373",
+                  backgroundColor: "#222222",
+                },
+              },
+            }}
+          >
             <Button onClick={sendDataToServer}>Add food</Button>
             <Button onClick={onClose}>Cancel </Button>
           </ModalFooter>

@@ -266,15 +266,52 @@ function UserIcon({ updateNutritionPlan, userHasNutritionPlan }) {
   return (
     <Box>
       <Menu>
-        <MenuButton as={Box} cursor="pointer" height="3rem" width="3rem">
+        <MenuButton
+          as={Box}
+          cursor="pointer"
+          height="3rem"
+          width="3rem"
+          margin="0.5rem 0.5rem 0 0"
+          borderRadius="full"
+          _hover={{
+            boxShadow: "0 0 3px 3px  #737373",
+          }}
+        >
           <Avatar
-            bg="gray.700"
-            icon={<AiOutlineUser fontSize="1.7rem" color="white" />}
+            backgroundColor="#222222"
+            icon={<AiOutlineUser fontSize="1.7rem" color="#ffffff" />}
           ></Avatar>
         </MenuButton>
-        <MenuList>
-          <MenuItem onClick={onNutritionPlanModalOpen}>Generate Plan</MenuItem>
+        <MenuList
+          backgroundColor="#222222"
+          border="0.05rem solid #bfbfbf"
+          boxShadow="0 0 2px 2px #737373"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+        >
           <MenuItem
+            backgroundColor="#222222"
+            textColor="#ffffff"
+            borderRadius="0.5rem"
+            marginY="0.2rem"
+            width="95%"
+            _hover={{
+              backgroundColor: "#333333",
+            }}
+            onClick={onNutritionPlanModalOpen}
+          >
+            Generate Plan
+          </MenuItem>
+          <MenuItem
+            backgroundColor="#222222"
+            textColor="#ffffff"
+            borderRadius="0.5rem"
+            marginY="0.2rem"
+            width="95%"
+            _hover={{
+              backgroundColor: "#333333",
+            }}
             onClick={() => {
               localStorage.removeItem("token");
               navigate("/");
@@ -291,14 +328,21 @@ function UserIcon({ updateNutritionPlan, userHasNutritionPlan }) {
       >
         <ModalOverlay></ModalOverlay>
 
-        <ModalContent>
-          <ModalHeader>
+        <ModalContent
+          backgroundColor="#404040"
+          textColor="#ffffff"
+          maxWidth="50rem"
+          padding="1rem"
+          border="0.05rem solid #bfbfbf"
+          boxShadow="0 0 3px 3px  #737373"
+        >
+          <ModalHeader textAlign="center" fontSize="1.5rem">
             Personalized Calories & Macronutrients Calculator
           </ModalHeader>
           <ModalCloseButton></ModalCloseButton>
 
           <form onSubmit={handleSubmit}>
-            <ModalBody>
+            <ModalBody display="flex" flexDirection="column" gap="1.5rem">
               <FormControl isRequired>
                 <FormLabel htmlFor="age">Age (years)</FormLabel>
                 <NumberInput
@@ -310,8 +354,14 @@ function UserIcon({ updateNutritionPlan, userHasNutritionPlan }) {
                 >
                   <NumberInputField />
                   <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
+                    <NumberIncrementStepper
+                      color="#ffffff"
+                      _active={{ backgroundColor: "#222222" }}
+                    />
+                    <NumberDecrementStepper
+                      color="#ffffff"
+                      _active={{ backgroundColor: "#222222" }}
+                    />
                   </NumberInputStepper>
                 </NumberInput>
               </FormControl>
@@ -327,8 +377,14 @@ function UserIcon({ updateNutritionPlan, userHasNutritionPlan }) {
                 >
                   <NumberInputField />
                   <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
+                    <NumberIncrementStepper
+                      color="#ffffff"
+                      _active={{ backgroundColor: "#222222" }}
+                    />
+                    <NumberDecrementStepper
+                      color="#ffffff"
+                      _active={{ backgroundColor: "#222222" }}
+                    />
                   </NumberInputStepper>
                 </NumberInput>
               </FormControl>
@@ -344,8 +400,14 @@ function UserIcon({ updateNutritionPlan, userHasNutritionPlan }) {
                 >
                   <NumberInputField />
                   <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
+                    <NumberIncrementStepper
+                      color="#ffffff"
+                      _active={{ backgroundColor: "#222222" }}
+                    />
+                    <NumberDecrementStepper
+                      color="#ffffff"
+                      _active={{ backgroundColor: "#222222" }}
+                    />
                   </NumberInputStepper>
                 </NumberInput>
               </FormControl>
@@ -452,7 +514,23 @@ function UserIcon({ updateNutritionPlan, userHasNutritionPlan }) {
               </FormControl>
             </ModalBody>
 
-            <ModalFooter>
+            <ModalFooter
+              display="flex"
+              justifyContent="center"
+              gap="1rem"
+              sx={{
+                Button: {
+                  type: "submit",
+                  backgroundColor: "#222222",
+                  textColor: "#ffffff",
+                  border: "0.05rem solid #bfbfbf",
+                  "&:hover": {
+                    boxShadow: "0 0 3px 3px  #737373",
+                    backgroundColor: "#222222",
+                  },
+                },
+              }}
+            >
               <Button type="submit">Submit</Button>
               <Button onClick={onNutritionPlanModalClose}>Cancel</Button>
             </ModalFooter>

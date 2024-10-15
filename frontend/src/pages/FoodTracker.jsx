@@ -95,11 +95,24 @@ function FoodTracker() {
         ></UserIcon>
       </Box>
 
-      <Button onClick={() => navigate("/food-tracker/add-food")}>
+      <Button
+        margin="2rem 0 0 2rem"
+        fontSize="1.5rem"
+        borderRadius="1.3rem"
+        padding="1.5rem"
+        textAlign="center"
+        backgroundColor="#222222"
+        textColor="#ffffff"
+        border="0.05rem solid #bfbfbf"
+        _hover={{
+          boxShadow: "0 0 3px 3px  #737373",
+        }}
+        onClick={() => navigate("/food-tracker/add-food")}
+      >
         Add food
       </Button>
 
-      <Divider borderWidth="0.3rem" borderColor="red"></Divider>
+      <Divider opacity="1" background="#ffffff" marginY="1%"></Divider>
 
       <FoodLog></FoodLog>
     </Box>

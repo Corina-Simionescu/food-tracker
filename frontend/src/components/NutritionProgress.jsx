@@ -80,29 +80,152 @@ function NutritionProgress({ targetNutrition }) {
   }, []);
 
   return (
-    <Box>
-      <CircularProgress value={40} size="15rem" color="green.400">
-        <CircularProgressLabel>
-          {consumedNutrition.calories}/{targetNutrition.calories || 0} calories
+    <Box
+      textColor="#ffffff"
+      display="flex"
+      justifyContent="center"
+      gap="2rem"
+      width="100%"
+    >
+      <CircularProgress
+        value={
+          targetNutrition.calories === 0
+            ? 0
+            : (consumedNutrition.calories / targetNutrition.calories) * 100
+        }
+        size="17rem"
+        trackColor="#303030"
+        color="#80ccff"
+      >
+        <CircularProgressLabel
+          display="flex"
+          justifyContent="center"
+          flexDirection="column"
+          gap="1rem"
+        >
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            marginTop="1rem"
+          >
+            <Box fontSize="2.5rem">{consumedNutrition.calories}</Box>
+            <Box fontSize="1.8rem" padding="0 0.5rem 0 0.5rem">
+              /
+            </Box>
+            <Box fontSize="1.8rem" marginTop="0.2rem">
+              {targetNutrition.calories || 0}
+            </Box>
+          </Box>
+
+          <Box fontSize="1.5rem">calories</Box>
         </CircularProgressLabel>
       </CircularProgress>
 
-      <CircularProgress value={40} size="15rem" color="green.400">
-        <CircularProgressLabel>
-          {consumedNutrition.proteins}/{targetNutrition.proteins || 0} proteins
+      <CircularProgress
+        value={
+          targetNutrition.proteins === 0
+            ? 0
+            : (consumedNutrition.proteins / targetNutrition.proteins) * 100
+        }
+        size="17rem"
+        trackColor="#303030"
+        color="#9fff80"
+      >
+        <CircularProgressLabel
+          display="flex"
+          justifyContent="center"
+          flexDirection="column"
+          gap="1rem"
+        >
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            marginTop="1rem"
+          >
+            <Box fontSize="2.5rem">{consumedNutrition.proteins}</Box>
+            <Box fontSize="1.8rem" padding="0 0.5rem 0 0.5rem">
+              /
+            </Box>
+            <Box fontSize="1.8rem" marginTop="0.2rem">
+              {targetNutrition.proteins || 0}
+            </Box>
+          </Box>
+
+          <Box fontSize="1.5rem">proteins</Box>
         </CircularProgressLabel>
       </CircularProgress>
 
-      <CircularProgress value={40} size="15rem" color="green.400">
-        <CircularProgressLabel>
-          {consumedNutrition.carbohydrates}/{targetNutrition.carbohydrates || 0}{" "}
-          carbs
+      <CircularProgress
+        value={
+          targetNutrition.carbohydrates === 0
+            ? 0
+            : (consumedNutrition.carbohydrates /
+                targetNutrition.carbohydrates) *
+              100
+        }
+        size="17rem"
+        trackColor="#303030"
+        color="#ffff66"
+      >
+        <CircularProgressLabel
+          display="flex"
+          justifyContent="center"
+          flexDirection="column"
+          gap="1rem"
+        >
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            marginTop="1rem"
+          >
+            <Box fontSize="2.5rem">{consumedNutrition.carbohydrates}</Box>
+            <Box fontSize="1.8rem" padding="0 0.5rem 0 0.5rem">
+              /
+            </Box>
+            <Box fontSize="1.8rem" marginTop="0.2rem">
+              {targetNutrition.carbohydrates || 0}
+            </Box>
+          </Box>
+
+          <Box fontSize="1.5rem">carbs</Box>
         </CircularProgressLabel>
       </CircularProgress>
 
-      <CircularProgress value={40} size="15rem" color="green.400">
-        <CircularProgressLabel>
-          {consumedNutrition.fats}/{targetNutrition.fats || 0} fats
+      <CircularProgress
+        value={
+          targetNutrition.fats === 0
+            ? 0
+            : (consumedNutrition.fats / targetNutrition.fats) * 100
+        }
+        size="17rem"
+        trackColor="#303030"
+        color="#ff704d"
+      >
+        <CircularProgressLabel
+          display="flex"
+          justifyContent="center"
+          flexDirection="column"
+          gap="1rem"
+        >
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            marginTop="1rem"
+          >
+            <Box fontSize="2.5rem">{consumedNutrition.fats}</Box>
+            <Box fontSize="1.8rem" padding="0 0.5rem 0 0.5rem">
+              /
+            </Box>
+            <Box fontSize="1.8rem" marginTop="0.2rem">
+              {targetNutrition.fats || 0}
+            </Box>
+          </Box>
+
+          <Box fontSize="1.5rem">fats</Box>
         </CircularProgressLabel>
       </CircularProgress>
     </Box>

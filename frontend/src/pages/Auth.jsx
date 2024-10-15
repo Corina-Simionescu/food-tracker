@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
+  Heading,
   Input,
   FormControl,
   FormLabel,
@@ -122,53 +123,96 @@ function Auth() {
   }
 
   return (
-    <Box>
+    <Box
+      width="100vw"
+      height="100vh"
+      paddingTop="2rem"
+      backgroundColor="#222222"
+    >
+      <Heading
+        textAlign="center"
+        textColor="#ffffff"
+        fontSize="3rem"
+        paddingBottom="3rem"
+      >
+        Food Tracker
+      </Heading>
       <form onSubmit={handleSignIn}>
-        <FormControl isRequired>
-          <FormLabel htmlFor="signInUsername">Username</FormLabel>
-          <Input
-            type="text"
-            id="signInUsername"
-            name="signInUsername"
-            onChange={(e) =>
-              setSignInData((prevData) => ({
-                ...prevData,
-                username: e.target.value,
-              }))
-            }
-          ></Input>
-        </FormControl>
+        <Box width="30%" margin="0 auto">
+          <FormControl isRequired textColor="#ffffff" marginBottom="2rem">
+            <FormLabel htmlFor="signInUsername">Username</FormLabel>
+            <Input
+              type="text"
+              id="signInUsername"
+              name="signInUsername"
+              onChange={(e) =>
+                setSignInData((prevData) => ({
+                  ...prevData,
+                  username: e.target.value,
+                }))
+              }
+            ></Input>
+          </FormControl>
 
-        <FormControl isRequired>
-          <FormLabel htmlFor="signInPassword">Password</FormLabel>
-          <Input
-            type="password"
-            id="signInPassword"
-            name="signInPassword"
-            onChange={(e) =>
-              setSignInData((prevData) => ({
-                ...prevData,
-                password: e.target.value,
-              }))
-            }
-          ></Input>
-        </FormControl>
+          <FormControl isRequired textColor="#ffffff">
+            <FormLabel htmlFor="signInPassword">Password</FormLabel>
+            <Input
+              type="password"
+              id="signInPassword"
+              name="signInPassword"
+              onChange={(e) =>
+                setSignInData((prevData) => ({
+                  ...prevData,
+                  password: e.target.value,
+                }))
+              }
+            ></Input>
+          </FormControl>
+        </Box>
 
-        <Button type="submit">Sign In</Button>
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          paddingTop="2rem"
+          gap="3rem"
+          sx={{
+            Button: {
+              backgroundColor: "#222222",
+              textColor: "#ffffff",
+              border: "0.05rem solid #bfbfbf",
+              "&:hover": {
+                boxShadow: "0 0 3px 3px  #737373",
+                backgroundColor: "#222222",
+              },
+            },
+          }}
+        >
+          <Button type="submit">Sign In</Button>
+          <Button onClick={onOpen}>New user</Button>
+        </Box>
       </form>
-
-      <Button onClick={onOpen}>Create account</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay></ModalOverlay>
 
-        <ModalContent>
-          <ModalHeader>Create Account</ModalHeader>
+        <ModalContent
+          backgroundColor="#404040"
+          textColor="#ffffff"
+          maxWidth="30rem"
+          padding="1rem"
+          border="0.05rem solid #bfbfbf"
+          boxShadow="0 0 3px 3px  #737373"
+        >
+          <ModalHeader textAlign="center" fontSize="1.5rem">
+            Create Account
+          </ModalHeader>
           <ModalCloseButton></ModalCloseButton>
 
           <form onSubmit={handleSignUp}>
             <ModalBody>
-              <FormControl isRequired>
+              <FormControl isRequired marginBottom="1.5rem">
                 <FormLabel htmlFor="signUpUsername">Username</FormLabel>
                 <Input
                   type="text"
@@ -183,7 +227,7 @@ function Auth() {
                 ></Input>
               </FormControl>
 
-              <FormControl isRequired>
+              <FormControl isRequired marginBottom="1.5rem">
                 <FormLabel htmlFor="signUpPassword">Password</FormLabel>
                 <Input
                   type="password"
@@ -199,7 +243,23 @@ function Auth() {
               </FormControl>
             </ModalBody>
 
-            <ModalFooter>
+            <ModalFooter
+              display="flex"
+              justifyContent="center"
+              gap="1rem"
+              sx={{
+                Button: {
+                  type: "submit",
+                  backgroundColor: "#222222",
+                  textColor: "#ffffff",
+                  border: "0.05rem solid #bfbfbf",
+                  "&:hover": {
+                    boxShadow: "0 0 3px 3px  #737373",
+                    backgroundColor: "#222222",
+                  },
+                },
+              }}
+            >
               <Button type="submit">Create Account</Button>
               <Button onClick={onClose}>Cancel</Button>
             </ModalFooter>
