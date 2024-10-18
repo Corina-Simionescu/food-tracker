@@ -198,19 +198,22 @@ function UserIcon({ updateNutritionPlan, userHasNutritionPlan }) {
         return;
       }
 
-      const response = await fetch("/api/food-tracker/nutrition", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          calories,
-          proteins,
-          fats,
-          carbohydrates,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/food-tracker/nutrition`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            calories,
+            proteins,
+            fats,
+            carbohydrates,
+          }),
+        }
+      );
 
       if (response.status === 401) {
         localStorage.setItem(

@@ -40,13 +40,16 @@ function FoodTracker() {
     }
 
     try {
-      const response = await fetch("/api/food-tracker/nutrition", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/food-tracker/nutrition`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.status === 401) {
         localStorage.setItem("error", "You need to sign in");

@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 
 const connectDatabase = require("./config/database.js");
 const routes = require("./routes/index.js");
@@ -11,11 +12,16 @@ app.use(express.json());
 
 connectDatabase();
 
-if (process.env.NODE_ENV === "production") {
-  //:)
-} else {
-  app.use("/", routes);
-}
+const corsOptions = {
+  origin:
+    process.env.NODE_ENV === "production"
+      ? "https://food-tracker-frontend.onrender.com"
+      : "http://localhost:5173",
+};
+
+app.use(cors(corsOptions));
+
+app.use("/");
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);

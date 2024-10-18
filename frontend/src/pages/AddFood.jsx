@@ -313,24 +313,27 @@ function AddFood() {
         throw new Error("User is not authenticated");
       }
 
-      const response = await fetch("/api/food-tracker/food", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          date: new Date(),
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          foodName: chosenFoodName,
-          amount: customAmount,
-          unit: originalNutritionData.unit,
-          calories: customNutritients.calories,
-          proteins: customNutritients.proteins,
-          carbohydrates: customNutritients.carbohydrates,
-          fats: customNutritients.fats,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/food-tracker/food`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            date: new Date(),
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            foodName: chosenFoodName,
+            amount: customAmount,
+            unit: originalNutritionData.unit,
+            calories: customNutritients.calories,
+            proteins: customNutritients.proteins,
+            carbohydrates: customNutritients.carbohydrates,
+            fats: customNutritients.fats,
+          }),
+        }
+      );
 
       const responseData = await response.json();
 
