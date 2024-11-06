@@ -1,6 +1,6 @@
 # Food Tracker App
 
-## [Demo](https://corina-simionescu.github.io/react-games/)
+## [Demo](https://food-tracker-corina.vercel.app/)
 
 ## Description 
 
