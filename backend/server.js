@@ -15,7 +15,7 @@ connectDatabase();
 const corsOptions = {
   origin:
     process.env.NODE_ENV === "production"
-      ? "https://food-tracker-frontend.onrender.com"
+      ? process.env.FRONTEND_VERCEL_URL
       : "http://localhost:5173",
 };
 

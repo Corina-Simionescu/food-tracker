@@ -21,13 +21,16 @@ function NutritionProgress({ targetNutrition }) {
       }
 
       try {
-        const response = await fetch(`/api/food-tracker/food`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/food-tracker/food`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (response.status === 401) {
           localStorage.setItem("error", "You need to sign in");
